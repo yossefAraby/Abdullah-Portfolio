@@ -96,6 +96,16 @@ var main = (function($) { var _ = {
 	locked: false,
 
 	/**
+	 * Auto swipe.
+	 * @var {object}
+	 */
+	autoSwipe: {
+		enabled: true,
+		timer: null,
+		delay: 3000
+	},
+
+	/**
 	 * Keyboard shortcuts.
 	 * @var {object}
 	 */
@@ -161,6 +171,7 @@ var main = (function($) { var _ = {
 						'<div class="nav-next"></div>' +
 						'<div class="nav-previous"></div>' +
 						'<div class="toggle"></div>' +
+						'<div class="auto-swipe-indicator">تمرير تلقائي</div>' +
 					'</div>' +
 				'</div>'
 			).appendTo(_.$body);
@@ -401,6 +412,9 @@ var main = (function($) { var _ = {
 					// Locked? Blur.
 						if (_.locked)
 							$this.blur();
+
+					// Stop auto swipe on manual interaction.
+						_.stopAutoSwipe();
 
 					// Switch to this thumbnail's slide.
 						_.switchTo($this.data('index'));
@@ -686,12 +700,62 @@ var main = (function($) { var _ = {
 					else
 						window.setTimeout(f, _.settings.slideDuration);
 
+		// Start auto swipe for first slide.
+			if (_.current === 0 && _.autoSwipe.enabled) {
+				_.startAutoSwipe();
+			}
+
+	},
+
+	/**
+	 * Starts auto swipe.
+	 */
+	startAutoSwipe: function() {
+
+		// Clear existing timer.
+			if (_.autoSwipe.timer)
+				window.clearTimeout(_.autoSwipe.timer);
+
+		// Only auto swipe if enabled and on first slide.
+			if (!_.autoSwipe.enabled || _.current !== 0)
+				return;
+
+		// Show indicator.
+			_.$viewer.find('.auto-swipe-indicator').addClass('active');
+
+		// Set timer.
+			_.autoSwipe.timer = window.setTimeout(function() {
+				if (_.autoSwipe.enabled && _.current === 0) {
+					_.next();
+				}
+			}, _.autoSwipe.delay);
+
+	},
+
+	/**
+	 * Stops auto swipe (on manual interaction).
+	 */
+	stopAutoSwipe: function() {
+
+		_.autoSwipe.enabled = false;
+
+		// Hide indicator.
+			_.$viewer.find('.auto-swipe-indicator').removeClass('active');
+
+		if (_.autoSwipe.timer) {
+			window.clearTimeout(_.autoSwipe.timer);
+			_.autoSwipe.timer = null;
+		}
+
 	},
 
 	/**
 	 * Switches to the next slide.
 	 */
 	next: function() {
+
+		// Stop auto swipe on manual interaction.
+			_.stopAutoSwipe();
 
 		// Calculate new index.
 			var i, c = _.current, l = _.slides.length;
@@ -710,6 +774,9 @@ var main = (function($) { var _ = {
 	 * Switches to the previous slide.
 	 */
 	previous: function() {
+
+		// Stop auto swipe on manual interaction.
+			_.stopAutoSwipe();
 
 		// Calculate new index.
 			var i, c = _.current, l = _.slides.length;
