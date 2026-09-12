@@ -988,8 +988,6 @@ input, select, textarea {
 				#thumbnails article .thumbnail img {
 					display: block;
 					width: 100%;
-					height: 225px;
-					object-fit: cover;
 				}
 
 				#thumbnails article .thumbnail:before {
@@ -1112,71 +1110,38 @@ input, select, textarea {
 				background: rgba(0, 211, 183, 1);
 			}
 
-/* Auto Swipe Indicator */
+/* Auto Swipe Toggle */
 
-		.auto-swipe-indicator {
+		.auto-swipe-toggle {
 			position: absolute;
 			bottom: 1em;
 			left: 50%;
 			transform: translateX(-50%);
-			background: rgba(0, 211, 183, 0.85);
-			color: #fff;
+			background: rgba(0, 211, 183, 0.2);
+			color: rgba(255, 255, 255, 0.6);
 			padding: 0.5em 1.2em;
 			border-radius: 20px;
-			font-size: 0.75em;
+			font-size: 0.8em;
 			z-index: 3;
-			opacity: 0;
-			pointer-events: none;
-			-moz-transition: opacity 0.3s ease;
-			-webkit-transition: opacity 0.3s ease;
-			transition: opacity 0.3s ease;
-		}
-
-			.auto-swipe-indicator.active {
-				opacity: 1;
-			}
-
-/* Auto Swipe Toggle Button */
-
-		.auto-swipe-btn {
-			position: fixed;
-			bottom: 1.5em;
-			right: 1.5em;
-			width: 3em;
-			height: 3em;
-			background: rgba(255, 255, 255, 0.9);
-			border: 2px solid #ccc;
-			border-radius: 50%;
 			cursor: pointer;
-			z-index: 10001;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			font-size: 1.4em;
-			color: #999;
+			pointer-events: auto;
 			-moz-transition: all 0.25s ease;
 			-webkit-transition: all 0.25s ease;
 			transition: all 0.25s ease;
+			border: 1px solid rgba(255, 255, 255, 0.2);
 		}
 
-			.auto-swipe-btn:hover {
-				border-color: #00D3B7;
-				color: #00D3B7;
-			}
-
-			.auto-swipe-btn.active {
-				background: #00D3B7;
-				border-color: #00D3B7;
+			.auto-swipe-toggle:hover {
+				background: rgba(0, 211, 183, 0.4);
 				color: #fff;
-				-moz-animation: spin 2s linear infinite;
-				-webkit-animation: spin 2s linear infinite;
-				animation: spin 2s linear infinite;
 			}
 
-			@keyframes spin {
-				from { transform: rotate(0deg); }
-				to { transform: rotate(360deg); }
+			.auto-swipe-toggle.active {
+				background: rgba(0, 211, 183, 0.85);
+				color: #fff;
+				border-color: #00D3B7;
 			}
+
 
 /* Category Headers */
 

@@ -171,7 +171,7 @@ var main = (function($) { var _ = {
 						'<div class="nav-next"></div>' +
 						'<div class="nav-previous"></div>' +
 						'<div class="toggle"></div>' +
-						'<div class="auto-swipe-indicator">تمرير تلقائي</div>' +
+						'<div class="auto-swipe-toggle">&#8634; تمرير تلقائي</div>' +
 					'</div>' +
 				'</div>'
 			).appendTo(_.$body);
@@ -180,10 +180,8 @@ var main = (function($) { var _ = {
 			_.$navNext = _.$viewer.find('.nav-next');
 			_.$navPrevious = _.$viewer.find('.nav-previous');
 
-		// Auto swipe button.
-			_.$autoSwipeBtn = $(
-				'<div class="auto-swipe-btn" title="تمرير تلقائي">&#8634;</div>'
-			).appendTo(_.$body);
+		// Auto swipe toggle element.
+			_.$autoSwipeBtn = _.$viewer.find('.auto-swipe-toggle');
 
 		// Main wrapper.
 			_.$main = $('#main');
@@ -722,8 +720,7 @@ var main = (function($) { var _ = {
 			if (!_.autoSwipe.enabled)
 				return;
 
-		// Show indicator.
-			_.$viewer.find('.auto-swipe-indicator').addClass('active');
+		// Update toggle state.
 			_.$autoSwipeBtn.addClass('active');
 
 		// Set timer.
@@ -743,8 +740,7 @@ var main = (function($) { var _ = {
 
 		_.autoSwipe.enabled = false;
 
-		// Hide indicator.
-			_.$viewer.find('.auto-swipe-indicator').removeClass('active');
+		// Update toggle state.
 			_.$autoSwipeBtn.removeClass('active');
 
 		if (_.autoSwipe.timer) {
