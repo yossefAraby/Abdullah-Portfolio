@@ -183,11 +183,7 @@ var main = (function($) { var _ = {
 		// Auto swipe button.
 			_.$autoSwipeBtn = $(
 				'<div class="auto-swipe-btn" title="تمرير تلقائي">&#8634;</div>'
-			).appendTo(_.$main);
-
-		// Auto swipe button state.
-			if (_.autoSwipe.enabled)
-				_.$autoSwipeBtn.addClass('active');
+			).appendTo(_.$body);
 
 		// Main wrapper.
 			_.$main = $('#main');
