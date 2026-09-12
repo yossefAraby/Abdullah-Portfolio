@@ -988,9 +988,6 @@ input, select, textarea {
 				#thumbnails article .thumbnail img {
 					display: block;
 					width: 100%;
-					height: 225px;
-					object-fit: cover;
-					object-position: center;
 				}
 
 				#thumbnails article .thumbnail:before {
@@ -1135,6 +1132,48 @@ input, select, textarea {
 
 			.auto-swipe-indicator.active {
 				opacity: 1;
+			}
+
+/* Auto Swipe Toggle Button */
+
+		.auto-swipe-btn {
+			position: fixed;
+			bottom: 1.5em;
+			right: 1.5em;
+			width: 3em;
+			height: 3em;
+			background: rgba(255, 255, 255, 0.9);
+			border: 2px solid #ccc;
+			border-radius: 50%;
+			cursor: pointer;
+			z-index: 10001;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-size: 1.4em;
+			color: #999;
+			-moz-transition: all 0.25s ease;
+			-webkit-transition: all 0.25s ease;
+			transition: all 0.25s ease;
+		}
+
+			.auto-swipe-btn:hover {
+				border-color: #00D3B7;
+				color: #00D3B7;
+			}
+
+			.auto-swipe-btn.active {
+				background: #00D3B7;
+				border-color: #00D3B7;
+				color: #fff;
+				-moz-animation: spin 2s linear infinite;
+				-webkit-animation: spin 2s linear infinite;
+				animation: spin 2s linear infinite;
+			}
+
+			@keyframes spin {
+				from { transform: rotate(0deg); }
+				to { transform: rotate(360deg); }
 			}
 
 /* Category Headers */

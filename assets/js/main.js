@@ -100,7 +100,7 @@ var main = (function($) { var _ = {
 	 * @var {object}
 	 */
 	autoSwipe: {
-		enabled: true,
+		enabled: false,
 		timer: null,
 		delay: 3000
 	},
@@ -179,6 +179,15 @@ var main = (function($) { var _ = {
 		// Nav.
 			_.$navNext = _.$viewer.find('.nav-next');
 			_.$navPrevious = _.$viewer.find('.nav-previous');
+
+		// Auto swipe button.
+			_.$autoSwipeBtn = $(
+				'<div class="auto-swipe-btn" title="تمرير تلقائي">&#8634;</div>'
+			).appendTo(_.$main);
+
+		// Auto swipe button state.
+			if (_.autoSwipe.enabled)
+				_.$autoSwipeBtn.addClass('active');
 
 		// Main wrapper.
 			_.$main = $('#main');
@@ -356,6 +365,11 @@ var main = (function($) { var _ = {
 					event.stopPropagation();
 				});
 
+		// Auto swipe toggle.
+			_.$autoSwipeBtn.on('click', function() {
+				_.toggleAutoSwipe();
+			});
+
 		// Nav.
 			_.$navNext.on('click', function() {
 				_.next();
@@ -412,9 +426,6 @@ var main = (function($) { var _ = {
 					// Locked? Blur.
 						if (_.locked)
 							$this.blur();
-
-					// Stop auto swipe on manual interaction.
-						_.stopAutoSwipe();
 
 					// Switch to this thumbnail's slide.
 						_.switchTo($this.data('index'));
@@ -700,11 +711,6 @@ var main = (function($) { var _ = {
 					else
 						window.setTimeout(f, _.settings.slideDuration);
 
-		// Start auto swipe for first slide.
-			if (_.current === 0 && _.autoSwipe.enabled) {
-				_.startAutoSwipe();
-			}
-
 	},
 
 	/**
@@ -716,24 +722,26 @@ var main = (function($) { var _ = {
 			if (_.autoSwipe.timer)
 				window.clearTimeout(_.autoSwipe.timer);
 
-		// Only auto swipe if enabled and on first slide.
-			if (!_.autoSwipe.enabled || _.current !== 0)
+		// Only auto swipe if enabled.
+			if (!_.autoSwipe.enabled)
 				return;
 
 		// Show indicator.
 			_.$viewer.find('.auto-swipe-indicator').addClass('active');
+			_.$autoSwipeBtn.addClass('active');
 
 		// Set timer.
 			_.autoSwipe.timer = window.setTimeout(function() {
-				if (_.autoSwipe.enabled && _.current === 0) {
+				if (_.autoSwipe.enabled) {
 					_.next();
+					_.startAutoSwipe();
 				}
 			}, _.autoSwipe.delay);
 
 	},
 
 	/**
-	 * Stops auto swipe (on manual interaction).
+	 * Stops auto swipe.
 	 */
 	stopAutoSwipe: function() {
 
@@ -741,6 +749,7 @@ var main = (function($) { var _ = {
 
 		// Hide indicator.
 			_.$viewer.find('.auto-swipe-indicator').removeClass('active');
+			_.$autoSwipeBtn.removeClass('active');
 
 		if (_.autoSwipe.timer) {
 			window.clearTimeout(_.autoSwipe.timer);
@@ -750,12 +759,23 @@ var main = (function($) { var _ = {
 	},
 
 	/**
+	 * Toggles auto swipe.
+	 */
+	toggleAutoSwipe: function() {
+
+		if (_.autoSwipe.enabled) {
+			_.stopAutoSwipe();
+		} else {
+			_.autoSwipe.enabled = true;
+			_.startAutoSwipe();
+		}
+
+	},
+
+	/**
 	 * Switches to the next slide.
 	 */
 	next: function() {
-
-		// Stop auto swipe on manual interaction.
-			_.stopAutoSwipe();
 
 		// Calculate new index.
 			var i, c = _.current, l = _.slides.length;
@@ -774,9 +794,6 @@ var main = (function($) { var _ = {
 	 * Switches to the previous slide.
 	 */
 	previous: function() {
-
-		// Stop auto swipe on manual interaction.
-			_.stopAutoSwipe();
 
 		// Calculate new index.
 			var i, c = _.current, l = _.slides.length;
