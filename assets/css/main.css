@@ -1052,6 +1052,10 @@ input, select, textarea {
 		left: auto !important;
 	}
 
+		html[dir="rtl"] body.is-preload-1 #main {
+			right: -22.5em !important;
+		}
+
 	html[dir="rtl"] body.fullscreen #main {
 		right: -22.5em !important;
 		left: auto !important;
@@ -1064,6 +1068,9 @@ input, select, textarea {
 
 	@media screen and (max-width: 1280px) {
 		html[dir="rtl"] body.fullscreen #main {
+			right: -19em !important;
+		}
+		html[dir="rtl"] body.is-preload-1 #main {
 			right: -19em !important;
 		}
 	}
